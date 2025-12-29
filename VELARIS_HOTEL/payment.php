@@ -20,7 +20,7 @@ if (!$id_kamar || !$checkin || !$checkout || !$total_harga) {
 
 /* DATA USER */
 $nama  = $_SESSION['customer_name'] ?? 'Guest';
-$email = $_SESSION['customer_email'] ?? '-';
+$emailcust = $_SESSION['customer_email'] ?? 'yes';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -172,7 +172,7 @@ body::after{
             </tr>
             <tr>
                 <td>Email</td>
-                <td><?= htmlspecialchars($email) ?></td>
+                <td><?= htmlspecialchars($emailcust) ?></td>
             </tr>
             <tr>
                 <td>Check-in</td>
