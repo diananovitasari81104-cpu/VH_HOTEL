@@ -201,7 +201,7 @@ body{
 
             <p>Status:
                 <strong style="color:green;">
-                    <?= strtoupper($data['status']) ?>
+                    Sudah Dibayar
                 </strong>
             </p>
         </div>
