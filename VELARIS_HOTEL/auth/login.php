@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-if (isset($_SESSION['customer_id'])) {
+// Jika sudah login, redirect
+if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'customer') {
     header("Location: ../booking.php");
     exit;
 }
