@@ -19,10 +19,11 @@ if (!verify_password($password, $user['password'])) {
     exit; 
 } 
 
-// Firce Set
+// Force Set
 $_SESSION['customer_id'] = (int)$user['id_user']; 
 $_SESSION['customer_name'] = $user['nama_lengkap'] ?? 'Customer'; 
 $_SESSION['customer_email'] = $user['email'] ?? '-'; 
 
 header("Location: ../../booking.php");
 exit; 
+
