@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+$nama     = sanitize($_POST['nama_lengkap']);  
 $email    = sanitize($_POST['email']);
 $no_hp    = sanitize($_POST['no_hp']);
 $password = $_POST['password'];
@@ -27,11 +28,12 @@ if ($cek) {
 
 $hash = hash_password($password);
 
-$sql = "INSERT INTO users (email, password, no_hp, role)
-        VALUES ('$email', '$hash', '$no_hp', 'customer')";
+$sql = "INSERT INTO users (nama_lengkap, email, password, no_hp, role)
+        VALUES ('$nama', '$email', '$hash', '$no_hp', 'customer')";
 
 insert($sql);
 
 $_SESSION['success'] = "Registrasi berhasil, silakan login";
 header("Location: ../../auth/login.php");
 exit;
+
