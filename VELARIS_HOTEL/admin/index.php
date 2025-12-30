@@ -2,6 +2,8 @@
 require_once '../config/database.php';
 require_once '../config/functions.php';
 
+require_staff();
+
 $page_title = 'Admin Dashboard';
 require_once 'includes/header.php';
 
@@ -348,3 +350,4 @@ Highcharts.chart('reservasiChart', {
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
