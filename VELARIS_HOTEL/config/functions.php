@@ -21,21 +21,44 @@ if (session_status() === PHP_SESSION_NONE) {
  * Cek apakah user sudah login
  */
 function is_logged_in() {
-    return isset($_SESSION['user_id']) && isset($_SESSION['role']);
+    if (!isset($_SESSION['user_id'])) {
+        return false;
+    }
+
+    $id = (int) $_SESSION['user_id'];
+    $user = fetch_single("SELECT id_user FROM users WHERE id_user = $id");
+
+    if (!$user) {
+        session_unset();
+        session_destroy();
+        return false;
+    }
+
+    return true;
 }
 
 /**
  * Cek apakah user adalah admin
  */
 function is_admin() {
-    return is_logged_in() && $_SESSION['role'] === 'admin';
+    if (!is_logged_in()) return false;
+
+    $id = (int) $_SESSION['user_id'];
+    $user = fetch_single("SELECT role FROM users WHERE id_user = $id");
+
+    return $user && $user['role'] === 'admin';
 }
 
 /**
  * Cek apakah user adalah staff
  */
 function is_staff() {
-    return is_logged_in() && ($_SESSION['role'] === 'staff' || $_SESSION['role'] === 'admin');
+    if (!is_logged_in()) return false;
+
+    $id = (int) $_SESSION['user_id'];
+    $user = fetch_single("SELECT role FROM users WHERE id_user = $id");
+
+    return $user && in_array($user['role'], ['admin', 'staff']);
 }
 
 /**
@@ -43,6 +66,8 @@ function is_staff() {
  */
 function require_login() {
     if (!is_logged_in()) {
+        session_unset();
+        session_destroy();
         header("Location: login.php");
         exit;
     }
@@ -52,9 +77,10 @@ function require_login() {
  * Redirect jika bukan admin
  */
 function require_admin() {
-    require_login();
     if (!is_admin()) {
-        header("Location: index.php");
+        session_unset();
+        session_destroy();
+        header("Location: login.php");
         exit;
     }
 }
@@ -63,11 +89,19 @@ function require_admin() {
  * Redirect jika bukan staff/admin
  */
 function require_staff() {
-    require_login();
     if (!is_staff()) {
-        header("Location: index.php");
+        session_unset();
+        session_destroy();
+        header("Location: login.php");
         exit;
     }
+
+    // sinkronkan ulang data user
+    $id = (int) $_SESSION['user_id'];
+    $user = fetch_single("SELECT nama_lengkap, role FROM users WHERE id_user = $id");
+
+    $_SESSION['nama_lengkap'] = $user['nama_lengkap'];
+    $_SESSION['role'] = $user['role'];
 }
 
 /**

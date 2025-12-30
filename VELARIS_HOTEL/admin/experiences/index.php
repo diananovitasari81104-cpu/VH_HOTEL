@@ -15,10 +15,10 @@
 require_once '../../config/database.php';
 require_once '../../config/functions.php';
 
+require_staff();
+
 $page_title = 'Experiences';
 require_once '../includes/header.php';
-
-require_staff();
 
 // ambil data experiences
 $experiences = fetch_all("SELECT * FROM experiences ORDER BY id_experience DESC");

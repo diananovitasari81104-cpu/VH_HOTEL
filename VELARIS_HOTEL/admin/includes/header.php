@@ -1,6 +1,6 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
-ob_start();
+require_once __DIR__ . '/../../config/functions.php';
+require_staff();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -202,7 +202,7 @@ body{
             <!-- ADMIN DROPDOWN (CUSTOM JS) -->
             <div class="dropdown" id="adminDropdown">
                 <button class="user-btn" id="adminToggle">
-                    <?= htmlspecialchars($_SESSION['nama_lengkap'] ?? 'Admin') ?>
+                    <?= htmlspecialchars($_SESSION['nama_lengkap']) ?>
                 </button>
 
                 <ul class="dropdown-menu">

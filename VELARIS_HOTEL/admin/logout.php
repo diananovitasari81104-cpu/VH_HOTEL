@@ -1,18 +1,27 @@
 <?php
 session_start();
-require_once '../config/database.php';
 require_once '../config/functions.php';
 
-// Log aktivitas sebelum logout
 if (is_logged_in()) {
     log_activity('Logout from admin panel');
 }
 
-// Hapus semua session
 session_unset();
 session_destroy();
 
-// Redirect ke login
+// HAPUS COOKIE PHPSESSID
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(
+        session_name(),
+        '',
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
+    );
+}
+
 header("Location: login.php");
 exit;
-?>
