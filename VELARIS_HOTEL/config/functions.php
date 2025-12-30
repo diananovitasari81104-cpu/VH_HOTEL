@@ -7,6 +7,7 @@ if (!ob_get_level()) {
     ob_start();
 }
 
+require_once __DIR__ . '/database.php';
 /**
  * VELARIS HOTEL - Helper Functions
  * Fungsi-fungsi bantuan untuk sistem
@@ -275,4 +276,5 @@ function generate_csrf_token() {
 function verify_csrf_token($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
+
 ?>
