@@ -35,31 +35,41 @@ require_once '../includes/header.php';
 
 <style>
 body{
-    background:linear-gradient(180deg,#f6f6f6 0%, #ffffff 65%);
+    background:linear-gradient(180deg,#f6f6f6 0%,#ffffff 65%);
 }
 
 .detail-wrap{
-    max-width:1000px;
-    margin:80px auto;
+    max-width:1100px;
+    margin:140px auto 120px;
     padding:0 20px;
 }
 
 .detail-card{
-    border:none;
-    border-radius:28px;
-    box-shadow:0 14px 40px rgba(0,0,0,.08);
+    background:#fff;
+    border-radius:30px;
+    box-shadow:0 25px 60px rgba(0,0,0,.08);
+    overflow:hidden;
 }
 
 .detail-header{
-    padding:28px 32px;
-    border-bottom:1px solid #eee;
+    padding:36px 40px;
     font-family:'Cinzel',serif;
     letter-spacing:2px;
-    font-size:1.1rem;
+    font-size:1.6rem;
+    border-bottom:1px solid #eee;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.status-badge{
+    font-size:.75rem;
+    padding:8px 18px;
+    border-radius:50px;
 }
 
 .detail-body{
-    padding:36px 32px 40px;
+    padding:46px 42px;
 }
 
 .section-title{
@@ -67,154 +77,169 @@ body{
     letter-spacing:2px;
     font-weight:600;
     color:#999;
-    margin-bottom:16px;
+    margin-bottom:14px;
 }
 
 .info-box{
     background:#fafafa;
-    border-radius:18px;
-    padding:18px 20px;
-    margin-bottom:24px;
+    border-radius:20px;
+    padding:20px 24px;
+    margin-bottom:28px;
 }
 
 .info-box p{
-    margin-bottom:6px;
+    margin:0 0 8px;
     font-size:.9rem;
 }
+
+.info-box p:last-child{margin-bottom:0}
 
 .reason-box,
 .note-box{
     background:#fafafa;
-    border-radius:18px;
-    padding:20px;
+    border-radius:20px;
+    padding:22px 24px;
     font-size:.9rem;
+    line-height:1.6;
 }
 
 .refund-amount{
-    font-size:1.8rem;
+    font-size:2.1rem;
     font-weight:600;
+    color:#d4af37;
 }
 
-.status-badge{
-    font-size:.75rem;
-    padding:8px 18px;
-    border-radius:20px;
+.divider{
+    height:1px;
+    background:#eee;
+    margin:48px 0;
 }
 
 .btn-back{
-    background:#6c757d;
-    border:none;
-    border-radius:14px;
-    padding:10px 18px;
+    border-radius:20px;
+    padding:10px 26px;
+    font-size:.8rem;
+    letter-spacing:1px;
 }
 </style>
 
 <section class="detail-wrap">
 
-    <div class="card detail-card">
+<div class="detail-card">
 
-        <div class="detail-header">
-            <i class="fas fa-ban me-2"></i>CANCELLATION DETAIL
+    <!-- HEADER -->
+    <div class="detail-header">
+        <div>
+            <i class="fas fa-ban me-2"></i>
+            CANCELLATION DETAIL
         </div>
 
-        <div class="detail-body">
-
-            <!-- GUEST & RESERVATION -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="section-title">GUEST INFORMATION</div>
-                    <div class="info-box">
-                        <p><strong>Name:</strong> <?= htmlspecialchars($cancel['nama_lengkap']) ?></p>
-                        <p><strong>Email:</strong> <?= htmlspecialchars($cancel['email']) ?></p>
-                        <p><strong>Phone:</strong> <?= htmlspecialchars($cancel['no_hp']) ?></p>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="section-title">RESERVATION INFORMATION</div>
-                    <div class="info-box">
-                        <p><strong>Reservation ID:</strong> #<?= $cancel['id_reservasi'] ?></p>
-                        <p><strong>Room:</strong> <?= htmlspecialchars($cancel['nama_kamar']) ?> (<?= htmlspecialchars($cancel['tipe_kamar']) ?>)</p>
-                        <p><strong>Check-in:</strong> <?= format_tanggal($cancel['tgl_checkin'],'d M Y') ?></p>
-                        <p><strong>Check-out:</strong> <?= format_tanggal($cancel['tgl_checkout'],'d M Y') ?></p>
-                        <p><strong>Quantity:</strong> <?= $cancel['jumlah_kamar'] ?> room(s)</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CANCELLATION -->
-            <div class="section-title mt-4">CANCELLATION DETAIL</div>
-            <div class="info-box">
-                <p><strong>Request Date:</strong>
-                    <?= format_tanggal($cancel['tgl_pengajuan'],'d F Y, H:i') ?>
-                </p>
-            </div>
-
-            <div class="section-title">REASON</div>
-            <div class="reason-box mb-4">
-                <?= nl2br(htmlspecialchars($cancel['alasan'])) ?>
-            </div>
-
-            <!-- REFUND -->
-            <div class="section-title">REFUND INFORMATION</div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="info-box">
-                        <p><strong>Bank Name:</strong> <?= htmlspecialchars($cancel['nama_bank']) ?></p>
-                        <p><strong>Account Number:</strong> <?= htmlspecialchars($cancel['no_rekening']) ?></p>
-                        <p><strong>Account Holder:</strong> <?= htmlspecialchars($cancel['nama_pemilik']) ?></p>
-                    </div>
-                </div>
-                <div class="col-md-6 d-flex align-items-center">
-                    <div>
-                        <div class="section-title mb-2">REFUND AMOUNT</div>
-                        <div class="refund-amount text-success">
-                            <?= format_rupiah($cancel['total_harga']) ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- STATUS -->
-            <div class="section-title mt-4">STATUS</div>
-            <?php
-            $badge = [
-                'pending'=>'warning',
-                'disetujui'=>'success',
-                'ditolak'=>'danger'
-            ];
-            $cls = $badge[$cancel['status_pengajuan']] ?? 'secondary';
-            ?>
-            <span class="badge bg-<?= $cls ?> status-badge">
-                <?= ucfirst($cancel['status_pengajuan']) ?>
-            </span>
-
-            <?php if ($cancel['status_pengajuan'] != 'pending'): ?>
-            <div class="info-box mt-3">
-                <p><strong>Processed Date:</strong>
-                    <?= $cancel['tgl_diproses']
-                        ? format_tanggal($cancel['tgl_diproses'],'d F Y, H:i')
-                        : '-' ?>
-                </p>
-            </div>
-            <?php endif; ?>
-
-            <?php if ($cancel['catatan_admin']): ?>
-            <div class="section-title mt-3">ADMIN NOTES</div>
-            <div class="note-box">
-                <?= nl2br(htmlspecialchars($cancel['catatan_admin'])) ?>
-            </div>
-            <?php endif; ?>
-
-            <!-- ACTION -->
-            <div class="mt-5 text-end">
-                <a href="index.php" class="btn btn-back">
-                    <i class="fas fa-arrow-left me-1"></i>Back
-                </a>
-            </div>
-
-        </div>
+        <?php
+        $badge = [
+            'pending'=>'warning',
+            'disetujui'=>'success',
+            'ditolak'=>'danger'
+        ];
+        $cls = $badge[$cancel['status_pengajuan']] ?? 'secondary';
+        ?>
+        <span class="badge bg-<?= $cls ?> status-badge">
+            <?= ucfirst($cancel['status_pengajuan']) ?>
+        </span>
     </div>
+
+    <div class="detail-body">
+
+        <!-- GUEST & RESERVATION -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section-title">GUEST INFORMATION</div>
+                <div class="info-box">
+                    <p><strong>Name</strong><br><?= htmlspecialchars($cancel['nama_lengkap']) ?></p>
+                    <p><strong>Email</strong><br><?= htmlspecialchars($cancel['email']) ?></p>
+                    <p><strong>Phone</strong><br><?= htmlspecialchars($cancel['no_hp']) ?></p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="section-title">RESERVATION INFORMATION</div>
+                <div class="info-box">
+                    <p><strong>Reservation ID</strong><br>#<?= $cancel['id_reservasi'] ?></p>
+                    <p><strong>Room</strong><br>
+                        <?= htmlspecialchars($cancel['nama_kamar']) ?> (<?= htmlspecialchars($cancel['tipe_kamar']) ?>)
+                    </p>
+                    <p><strong>Check-in</strong><br><?= format_tanggal($cancel['tgl_checkin'],'d M Y') ?></p>
+                    <p><strong>Check-out</strong><br><?= format_tanggal($cancel['tgl_checkout'],'d M Y') ?></p>
+                    <p><strong>Quantity</strong><br><?= $cancel['jumlah_kamar'] ?> room(s)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- CANCELLATION -->
+        <div class="section-title">CANCELLATION DETAIL</div>
+        <div class="info-box">
+            <p><strong>Request Date</strong><br>
+                <?= format_tanggal($cancel['tgl_pengajuan'],'d F Y, H:i') ?>
+            </p>
+        </div>
+
+        <div class="section-title">REASON</div>
+        <div class="reason-box mb-4">
+            <?= nl2br(htmlspecialchars($cancel['alasan'])) ?>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- REFUND -->
+        <div class="section-title">REFUND INFORMATION</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-box">
+                    <p><strong>Bank Name</strong><br><?= htmlspecialchars($cancel['nama_bank']) ?></p>
+                    <p><strong>Account Number</strong><br><?= htmlspecialchars($cancel['no_rekening']) ?></p>
+                    <p><strong>Account Holder</strong><br><?= htmlspecialchars($cancel['nama_pemilik']) ?></p>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <div>
+                    <div class="section-title">REFUND AMOUNT</div>
+                    <div class="refund-amount">
+                        <?= format_rupiah($cancel['total_harga']) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php if ($cancel['status_pengajuan'] != 'pending'): ?>
+        <div class="divider"></div>
+        <div class="section-title">PROCESSED INFORMATION</div>
+        <div class="info-box">
+            <p><strong>Processed Date</strong><br>
+                <?= $cancel['tgl_diproses']
+                    ? format_tanggal($cancel['tgl_diproses'],'d F Y, H:i')
+                    : '-' ?>
+            </p>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($cancel['catatan_admin']): ?>
+        <div class="section-title">ADMIN NOTES</div>
+        <div class="note-box">
+            <?= nl2br(htmlspecialchars($cancel['catatan_admin'])) ?>
+        </div>
+        <?php endif; ?>
+
+        <!-- ACTION -->
+        <div class="mt-5 text-end">
+            <a href="index.php" class="btn btn-secondary btn-back">
+                <i class="fas fa-arrow-left me-2"></i>Back to List
+            </a>
+        </div>
+
+    </div>
+</div>
 
 </section>
 
