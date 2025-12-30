@@ -177,6 +177,31 @@ require_once __DIR__ . '/../includes/header.php';
                         <?php endforeach ?>
                         </tbody>
                     </table>
+
+                    <!-- MODAL REJECT -->
+                <div class="modal fade" id="rejectModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="border-radius:18px">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reject Cancellation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="hidden" id="reject_id">
+
+                            <div class="mb-3">
+                                <label class="form-label">Alasan Penolakan</label>
+                                <textarea id="reject_reason" class="form-control" rows="4" placeholder="Masukkan alasan penolakan..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button class="btn btn-danger" id="confirmReject">Reject</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -212,6 +237,50 @@ $('.btn-approve').on('click', function () {
 
             if (res.success) {
                 location.reload(); 
+            } else {
+                alert(res.message);
+            }
+        },
+        error: function () {
+            alert('AJAX error');
+        }
+    });
+});
+</script>
+
+<script>
+$(document).on('click', '.btn-reject', function () {
+    const id = $(this).data('id');
+
+    $('#reject_id').val(id);
+    $('#reject_reason').val('');
+
+    const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+    modal.show();
+});
+
+$('#confirmReject').on('click', function () {
+    const id = $('#reject_id').val();
+    const reason = $('#reject_reason').val().trim();
+
+    if (reason === '') {
+        alert('Alasan penolakan wajib diisi');
+        return;
+    }
+
+    $.ajax({
+        url: 'reject.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            id: id,
+            catatan_admin: reason
+        },
+        success: function (res) {
+            console.log(res);
+
+            if (res.success) {
+                location.reload();
             } else {
                 alert(res.message);
             }
