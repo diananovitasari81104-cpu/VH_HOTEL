@@ -126,6 +126,9 @@ button{
         <?php endif; ?>
 
         <form action="../api/auth/login.php" method="POST">
+            <label>Nama</label><br>
+            <input type="text" name="nama_lengkap" required><br><br>
+            
             <label>Email address</label>
             <input type="email" name="email" required>
 
@@ -145,3 +148,4 @@ button{
 
 </body>
 </html>
+
