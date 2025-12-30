@@ -206,11 +206,41 @@ body{
                 </button>
 
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/logout.php">Logout</a></li>
-                    <li><a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/pembatalan/index.php">Cancellation Requests</a></li>
-                    <li><a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/log/index.php">Log Activity</a></li>
-                    <li><a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/reservasi/index.php">Reservations</a></li>
-                    <li><a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/users/index.php">Manage Users</a></li>
+                    
+                    <!-- COMMON -->
+                    <li>
+                        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/logout.php">
+                            Logout
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/pembatalan/index.php">
+                            Cancellation Requests
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/reservasi/index.php">
+                            Reservations
+                        </a>
+                    </li>
+
+                    <!-- ADMIN ONLY -->
+                    <?php if (is_admin()): ?>
+                        <li>
+                            <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/log/index.php">
+                                Log Activity
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/users/index.php">
+                                Manage Users
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
                 </ul>
             </div>
 
@@ -259,4 +289,5 @@ adminToggle.addEventListener('click', (e) => {
 document.addEventListener('click', () => {
     adminDropdown.classList.remove('show');
 });
+
 </script>
