@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../config/functions.php';
 
@@ -13,6 +11,7 @@ $cancellations = fetch_all("
     SELECT 
         p.*,
         r.tgl_checkin,
+    
         r.total_harga,
         u.nama_lengkap,
         u.email,
@@ -161,19 +160,15 @@ require_once __DIR__ . '/../includes/header.php';
 
                                     <?php if ($c['status_pengajuan'] === 'pending'): ?>
 
-                                        <!-- APPROVE -->
-                                        <a href="approve.php?id=<?= $c['id_batal'] ?>"
-                                        class="btn btn-sm btn-success"
-                                        onclick="return confirm('Approve this cancellation request?')">
-                                            <i class="fas fa-check"></i>
-                                        </a>
+                                    <button class="btn btn-sm btn-success btn-approve"
+                                            data-id="<?= $c['id_batal'] ?>">
+                                        <i class="fas fa-check"></i>
+                                    </button>
 
-                                        <!-- REJECT -->
-                                        <a href="reject.php?id=<?= $c['id_batal'] ?>"
-                                        class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Reject this cancellation request?')">
-                                            <i class="fas fa-times"></i>
-                                        </a>
+                                    <button class="btn btn-sm btn-danger btn-reject"
+                                            data-id="<?= $c['id_batal'] ?>">
+                                        <i class="fas fa-times"></i>
+                                    </button>
 
                                     <?php endif; ?>
 
@@ -189,11 +184,41 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <script>
 $(function(){
     $('#cancellationsTable').DataTable({
         order:[[0,'desc']],
         pageLength:10
+    });
+});
+</script>
+
+<script>
+$('.btn-approve').on('click', function () {
+    const id = $(this).data('id');
+
+    if (!confirm('Yakin approve pembatalan?')) return;
+
+    $.ajax({
+        url: 'approve.php',
+        type: 'POST',
+        data: { id: id },
+        dataType: 'json',
+        success: function (res) {
+            console.log(res);
+
+            if (res.success) {
+                location.reload(); 
+            } else {
+                alert(res.message);
+            }
+        },
+        error: function () {
+            alert('AJAX error');
+        }
     });
 });
 </script>
