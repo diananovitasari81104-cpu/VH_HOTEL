@@ -1,5 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
+
+$currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -133,6 +135,22 @@ body{
     .menu-toggle{display:block}
     .header .wrap{padding:0 24px}
 }
+
+.nav-menu a.active{
+    color: var(--gold);
+    position: relative;
+}
+
+.nav-menu a.active::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:100%;
+    height:1px;
+    background:var(--gold);
+}
+
 </style>
 </head>
 
@@ -145,11 +163,22 @@ body{
 
         <!-- DESKTOP MENU -->
         <nav class="nav-menu">
-            <a href="index.php">HOME</a>
-            <a href="rooms.php#rooms">ROOM</a>
-            <a href="experience.php#experience">EXPERIENCES</a>
-            <a href="contact.php#gallery">CONTACT</a>
-        </nav>
+    <a href="index.php" class="<?= $currentPage=='index.php'?'active':'' ?>">HOME</a>
+    <a href="rooms.php" class="<?= $currentPage=='rooms.php'?'active':'' ?>">ROOM</a>
+    <a href="experience.php" class="<?= $currentPage=='experience.php'?'active':'' ?>">EXPERIENCES</a>
+    <a href="contact.php" class="<?= $currentPage=='contact.php'?'active':'' ?>">CONTACT</a>
+
+    <?php if (isset($_SESSION['customer_id'])): ?>
+        <a href="checkin_online.php" class="<?= $currentPage=='checkin_online.php'?'active':'' ?>">
+            ONLINE CHECK-IN
+        </a>
+    <?php else: ?>
+        <a href="auth/login.php">
+            ONLINE CHECK-IN
+        </a>
+    <?php endif; ?>
+</nav>
+
 
         <div class="d-flex align-items-center gap-3">
             <!-- BOOKING DESKTOP -->
@@ -172,6 +201,12 @@ body{
     <a href="rooms.php#rooms">ROOM</a>
     <a href="experience.php#experience">EXPERIENCES</a>
     <a href="contact.php#gallery">CONTACT</a>
+
+    <?php if (isset($_SESSION['customer_id'])): ?>
+    <a href="checkin_online.php">ONLINE CHECK-IN</a>
+<?php else: ?>
+    <a href="auth/login.php">ONLINE CHECK-IN</a>
+<?php endif; ?>
 
     <a href="booking.php" class="btn-booking-now">
         Booking Now

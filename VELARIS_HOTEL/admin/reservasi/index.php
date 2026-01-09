@@ -24,7 +24,6 @@ require_once '../includes/header.php';
 ?>
 
 <style>
-
 .page-wrapper{
     padding:160px 20px 120px;
     background:linear-gradient(180deg,#ffffff 0%,#f6f6f6 100%);
@@ -39,7 +38,6 @@ require_once '../includes/header.php';
     background:#fff;
     border-radius:26px;
     box-shadow:0 25px 60px rgba(0,0,0,.08);
-    border:0;
 }
 
 .lux-header{
@@ -93,46 +91,54 @@ require_once '../includes/header.php';
                             <th>Qty</th>
                             <th>Total</th>
                             <th>Status</th>
-                            <th class="text-end"></th>
+                            <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($reservations as $res): ?>
                         <tr>
                             <td><strong>#<?= $res['id_reservasi'] ?></strong></td>
+
                             <td>
                                 <?= htmlspecialchars($res['nama_lengkap']) ?><br>
                                 <small class="text-muted"><?= htmlspecialchars($res['email']) ?></small>
                             </td>
+
                             <td>
                                 <?= htmlspecialchars($res['nama_kamar']) ?><br>
                                 <small class="text-muted"><?= htmlspecialchars($res['tipe_kamar']) ?></small>
                             </td>
+
                             <td><?= format_tanggal($res['tgl_checkin'], 'd M Y') ?></td>
                             <td><?= format_tanggal($res['tgl_checkout'], 'd M Y') ?></td>
+
                             <td>
                                 <span class="badge bg-info">
                                     <?= $res['jumlah_kamar'] ?> room(s)
                                 </span>
                             </td>
+
                             <td>
                                 <strong><?= format_rupiah($res['total_harga']) ?></strong>
                             </td>
+
                             <td>
                                 <?php
-                                $map = [
-                                    'menunggu_bayar' => 'warning',
+                                $status_map = [
+                                    'menunggu_bayar'      => 'warning',
                                     'menunggu_verifikasi' => 'info',
-                                    'lunas' => 'success',
-                                    'batal' => 'danger',
-                                    'selesai' => 'secondary'
+                                    'lunas'               => 'success',
+                                    'cancelled_request'   => 'warning',
+                                    'batal'               => 'danger',
+                                    'selesai'             => 'secondary'
                                 ];
-                                $cls = $map[$res['status']] ?? 'secondary';
+                                $badge = $status_map[$res['status']] ?? 'secondary';
                                 ?>
-                                <span class="badge bg-<?= $cls ?>">
+                                <span class="badge bg-<?= $badge ?>">
                                     <?= ucfirst(str_replace('_',' ',$res['status'])) ?>
                                 </span>
                             </td>
+
                             <td class="text-end">
                                 <a href="detail.php?id=<?= $res['id_reservasi'] ?>"
                                    class="btn btn-sm btn-outline-dark"
@@ -140,11 +146,11 @@ require_once '../includes/header.php';
                                     <i class="fas fa-eye"></i>
                                 </a>
 
-                                <button class="btn btn-sm btn-warning"
-                                        onclick="updateStatus(<?= $res['id_reservasi'] ?>)"
-                                        title="Update Status">
-                                    <i class="fas fa-edit"></i>
-                                </button>
+                                <?php if ($res['status'] === 'cancelled_request'): ?>
+                                    <span class="badge bg-warning ms-2">
+                                        Cancellation Requested
+                                    </span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach ?>
@@ -157,73 +163,13 @@ require_once '../includes/header.php';
 </div>
 </div>
 
-<!-- MODAL UPDATE STATUS (TETAP) -->
-<div class="modal fade" id="statusModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update Reservation Status</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="statusForm">
-                    <input type="hidden" id="reservasi_id" name="id">
-                    <div class="mb-3">
-                        <label class="form-label">New Status</label>
-                        <select name="status" class="form-select" required>
-                            <option value="menunggu_bayar">Waiting for Payment</option>
-                            <option value="menunggu_verifikasi">Waiting for Verification</option>
-                            <option value="lunas">Paid</option>
-                            <option value="batal">Cancelled</option>
-                            <option value="selesai">Completed</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary" onclick="saveStatus()">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
     $('#reservationsTable').DataTable({
         order: [[0, 'desc']],
         pageLength: 10
     });
-
 });
-
-function updateStatus(id) {
-    document.getElementById('reservasi_id').value = id;
-
-    const modalEl = document.getElementById('statusModal');
-    const modal   = new bootstrap.Modal(modalEl);
-
-    modal.show();
-}
-
-function saveStatus() {
-    $.ajax({
-        url: 'update_status.php',
-        type: 'POST',
-        data: $('#statusForm').serialize(),
-        dataType: 'json',
-        success: function (res) {
-            alert(res.message);
-            if (res.success) {
-                location.reload();
-            }
-        },
-        error: function () {
-            alert('Error updating status');
-        }
-    });
-}
 </script>
 
 <?php require_once '../includes/footer.php'; ?>

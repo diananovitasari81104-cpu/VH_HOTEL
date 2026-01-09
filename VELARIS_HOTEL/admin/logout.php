@@ -2,14 +2,15 @@
 session_start();
 require_once '../config/functions.php';
 
-if (is_logged_in()) {
-    log_activity('Logout from admin panel');
+/* LOG ACTIVITY JIKA ADMIN LOGIN */
+if (function_exists('is_logged_in') && is_logged_in()) {
+    log_activity('Admin logout');
 }
 
-session_unset();
-session_destroy();
+/* HAPUS SEMUA DATA SESSION */
+$_SESSION = [];
 
-// HAPUS COOKIE PHPSESSID
+/* HAPUS COOKIE SESSION */
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(
@@ -23,5 +24,9 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-header("Location: login.php");
+/* DESTROY SESSION */
+session_destroy();
+
+/* REDIRECT + FEEDBACK */
+header("Location: login.php?logout=success");
 exit;

@@ -34,6 +34,6 @@ $sql = "INSERT INTO users (nama_lengkap, email, password, no_hp, role)
 insert($sql);
 
 $_SESSION['success'] = "Registrasi berhasil, silakan login";
-header("Location: ../../auth/login.php");
+header("Location: ../../auth/register.php?success=1");
 exit;
 

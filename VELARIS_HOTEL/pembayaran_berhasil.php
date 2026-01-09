@@ -1,10 +1,44 @@
 <?php
 session_start();
+require_once "config/database.php";
 
 $id_reservasi = $_GET['id_reservasi'] ?? null;
 if (!$id_reservasi) {
     die("ID reservasi tidak valid");
 }
+
+/* KONEKSI DB */
+$db   = new Koneksi();
+$conn = $db->getKoneksi();
+
+/* AMBIL DATA RESERVASI */
+$stmt = $conn->prepare("
+    SELECT kode_booking 
+    FROM reservasi 
+    WHERE id_reservasi = ?
+");
+$stmt->bind_param("i", $id_reservasi);
+$stmt->execute();
+$result = $stmt->get_result();
+$data   = $result->fetch_assoc();
+
+if (!$data) {
+    die("Data reservasi tidak ditemukan");
+}
+
+$kode_booking = $data['kode_booking'];
+
+// UPDATE STATUS JADI LUNAS
+$update = $conn->prepare("
+    UPDATE reservasi 
+    SET status = 'lunas'
+    WHERE id_reservasi = ?
+      AND status != 'lunas'
+");
+$update->bind_param("i", $id_reservasi);
+$update->execute();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -24,12 +58,9 @@ if (!$id_reservasi) {
 body{
     margin:0;
     min-height:100vh;
-
-    /* BACKGROUND FOTO + BLUR */
     background:
         linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
         url('uploads/experiences/pool.jpg') center/cover no-repeat;
-
     display:flex;
     align-items:center;
     justify-content:center;
@@ -73,6 +104,28 @@ body{
     font-size:.95rem;
 }
 
+/* BOOKING CODE */
+.booking-code{
+    margin:22px 0;
+    padding:16px;
+    border-radius:14px;
+    background:#f6f6f6;
+    border:1px dashed #d4af37;
+}
+
+.booking-code span{
+    display:block;
+    font-size:.75rem;
+    letter-spacing:1px;
+    color:#777;
+}
+
+.booking-code strong{
+    font-size:1.25rem;
+    letter-spacing:3px;
+    color:#000;
+}
+
 /* BUTTON */
 .success-card a{
     display:inline-block;
@@ -104,8 +157,14 @@ body{
         Pembayaran Anda telah berhasil diproses.
     </p>
 
+    <!-- KODE BOOKING -->
+    <div class="booking-code">
+        <span>BOOKING CODE</span>
+        <strong><?= htmlspecialchars($kode_booking) ?></strong>
+    </div>
+
     <p style="font-size:.85rem; color:#666;">
-        Detail reservasi dapat Anda lihat pada halaman booking detail.
+        Simpan kode booking ini untuk proses check-in di hotel.
     </p>
 
     <a href="booking_detail.php?id_reservasi=<?= $id_reservasi ?>">

@@ -15,6 +15,10 @@ require_staff();
 <!-- BOOTSTRAP CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- SWEETALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <style>
 :root{
     --gold:#d4af37;
@@ -178,6 +182,29 @@ body{
     .menu-toggle{display:block}
     .header .wrap{padding:0 24px}
 }
+
+/* SWEETALERT HOTEL THEME */
+.swal2-popup{
+    border-radius:24px !important;
+    font-family:'Inter',sans-serif;
+}
+
+.swal2-title{
+    font-family:'Cinzel',serif;
+    letter-spacing:2px;
+}
+
+.swal2-confirm{
+    background:#000 !important;
+    border-radius:24px !important;
+    padding:10px 32px !important;
+}
+
+.swal2-cancel{
+    border-radius:24px !important;
+    padding:10px 32px !important;
+}
+
 </style>
 </head>
 
@@ -209,9 +236,10 @@ body{
                     
                     <!-- COMMON -->
                     <li>
-                        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/logout.php">
-                            Logout
-                        </a>
+                        <a class="dropdown-item" href="javascript:void(0)" onclick="confirmAdminLogout()">
+    Logout
+</a>
+
                     </li>
 
                     <li>
@@ -290,4 +318,25 @@ document.addEventListener('click', () => {
     adminDropdown.classList.remove('show');
 });
 
+function confirmAdminLogout(){
+    Swal.fire({
+        title: 'Confirm Logout',
+        text: 'Are you sure you want to logout from admin panel?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Logout',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#000',
+        cancelButtonColor: '#aaa',
+        reverseButtons: true,
+        customClass: {
+            popup: 'swal-hotel',
+            title: 'swal-title'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/uaspemweb/VELARIS_HOTEL/admin/logout.php';
+        }
+    });
+}
 </script>

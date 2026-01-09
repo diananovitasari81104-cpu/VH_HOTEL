@@ -6,6 +6,7 @@ require_staff();
 
 $id = (int)($_GET['id'] ?? 0);
 
+// Ambil data reservasi
 $reservasi = fetch_single("
     SELECT 
         r.*,
@@ -15,10 +16,13 @@ $reservasi = fetch_single("
         k.nama_kamar,
         k.tipe_kamar,
         k.harga harga_kamar,
-        k.foto_kamar
+        k.foto_kamar,
+        p.status_pengajuan,
+        p.id_batal
     FROM reservasi r
     JOIN users u ON r.id_user = u.id_user
     JOIN kamar k ON r.id_kamar = k.id_kamar
+    LEFT JOIN pembatalan p ON p.id_reservasi = r.id_reservasi
     WHERE r.id_reservasi = $id
 ");
 
@@ -41,40 +45,14 @@ require_once '../includes/header.php';
 ?>
 
 <style>
-.page-wrapper{
-    padding:160px 20px 120px;
-    background:linear-gradient(180deg,#fff 0%,#f6f6f6 100%);
-}
+.page-wrapper{padding:160px 20px 120px;background:linear-gradient(180deg,#fff 0%,#f6f6f6 100%);}
 .lux-container{max-width:1200px;margin:auto;}
-.lux-card{
-    background:#fff;
-    border-radius:28px;
-    box-shadow:0 30px 70px rgba(0,0,0,.08);
-}
-.lux-header{
-    padding:36px 44px;
-    font-family:'Cinzel',serif;
-    font-size:1.8rem;
-    letter-spacing:2px;
-    border-bottom:1px solid #eee;
-}
+.lux-card{background:#fff;border-radius:28px;box-shadow:0 30px 70px rgba(0,0,0,.08);}
+.lux-header{padding:36px 44px;font-family:'Cinzel',serif;font-size:1.8rem;letter-spacing:2px;border-bottom:1px solid #eee;}
 .lux-body{padding:44px;}
-.section-title{
-    font-size:.85rem;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    color:#888;
-    margin-bottom:16px;
-}
-.room-image{
-    border-radius:18px;
-    box-shadow:0 15px 35px rgba(0,0,0,.15);
-}
-.badge{
-    padding:8px 16px;
-    border-radius:50px;
-    font-size:.75rem;
-}
+.section-title{font-size:.85rem;letter-spacing:1px;text-transform:uppercase;color:#888;margin-bottom:16px;}
+.room-image{border-radius:18px;box-shadow:0 15px 35px rgba(0,0,0,.15);}
+.badge{padding:8px 16px;border-radius:50px;font-size:.75rem;}
 </style>
 
 <div class="page-wrapper">
@@ -187,72 +165,37 @@ $map = [
     'menunggu_verifikasi'=>'info',
     'lunas'=>'success',
     'batal'=>'danger',
-    'selesai'=>'secondary'
+    'selesai'=>'secondary',
+    'pembatalan_diajukan'=>'primary'
 ];
 ?>
 <span class="badge bg-<?= $map[$reservasi['status']] ?>">
     <?= ucfirst(str_replace('_',' ',$reservasi['status'])) ?>
 </span>
 
-<button class="btn btn-primary w-100 mt-4" onclick="openStatusModal()">
-    Update Status
-</button>
+<?php if($reservasi['status'] === 'pembatalan_diajukan'): ?>
+<div class="mt-4">
+    <button class="btn btn-success w-100 mb-2" onclick="prosesPembatalan('approve')">Setujui Pembatalan</button>
+    <button class="btn btn-danger w-100" onclick="prosesPembatalan('reject')">Tolak Pembatalan</button>
+</div>
+<?php endif; ?>
 </div>
 </div>
 </div>
 
-</div>
-</div>
-</div>
-
-<!-- MODAL -->
-<div class="modal fade" id="statusModal" tabindex="-1">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-    <h5 class="modal-title">Update Reservation Status</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-<div class="modal-body">
-<form id="statusForm">
-<input type="hidden" name="id" value="<?= $reservasi['id_reservasi'] ?>">
-<select name="status" class="form-select" required>
-    <option value="menunggu_bayar" <?= $reservasi['status']=='menunggu_bayar'?'selected':'' ?>>Waiting for Payment</option>
-    <option value="menunggu_verifikasi" <?= $reservasi['status']=='menunggu_verifikasi'?'selected':'' ?>>Waiting for Verification</option>
-    <option value="lunas" <?= $reservasi['status']=='lunas'?'selected':'' ?>>Paid</option>
-    <option value="batal" <?= $reservasi['status']=='batal'?'selected':'' ?>>Cancelled</option>
-    <option value="selesai" <?= $reservasi['status']=='selesai'?'selected':'' ?>>Completed</option>
-</select>
-</form>
-</div>
-<div class="modal-footer">
-<button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-<button class="btn btn-primary" onclick="saveStatus()">Save</button>
-</div>
 </div>
 </div>
 </div>
 
 <script>
-function openStatusModal(){
-    const modal = new bootstrap.Modal(document.getElementById('statusModal'));
-    modal.show();
-}
-
-function saveStatus(){
-    $.ajax({
-        url:'update_status.php',
-        type:'POST',
-        data:$('#statusForm').serialize(),
-        dataType:'json',
-        success:function(res){
-            alert(res.message);
-            if(res.success) location.reload();
-        },
-        error:function(){
-            alert('Failed to update status');
-        }
-    });
+function prosesPembatalan(action){
+    $.post('update_status.php', {
+        id: <?= $reservasi['id_reservasi'] ?>,
+        action: action // approve / reject
+    }, function(res){
+        alert(res.message);
+        if(res.success) location.reload();
+    }, 'json');
 }
 </script>
 

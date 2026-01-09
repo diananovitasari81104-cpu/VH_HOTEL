@@ -182,5 +182,29 @@ body::before{
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<?php if (isset($_GET['logout']) && $_GET['logout'] === 'success'): ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+Swal.fire({
+    title: 'Logout Successful',
+    text: 'You have safely logged out from Velaris Admin Panel.',
+    icon: 'success',
+    confirmButtonColor: '#000',
+    confirmButtonText: 'OK',
+    timer: 3000,
+    timerProgressBar: true
+});
+window.history.replaceState({}, document.title, window.location.pathname);
+</script>
+<?php endif; ?>
+
 </body>
+<!-- SweetAlert2 CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+/
+</script>
 </html>

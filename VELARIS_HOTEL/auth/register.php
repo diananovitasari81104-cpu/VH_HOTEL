@@ -9,6 +9,8 @@ session_start();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 body{margin:0;font-family:'Inter',sans-serif}
@@ -83,6 +85,20 @@ button{
     font-size:.75rem;
 }
 .links a{color:#c59d2a;text-decoration:none}
+
+.swal2-popup{
+    border-radius:20px;
+    font-family:'Inter',sans-serif;
+}
+.swal2-title{
+    font-family:'Cinzel',serif;
+    letter-spacing:1px;
+}
+.swal2-confirm{
+    border-radius:25px !important;
+    padding:10px 32px !important;
+}
+
 </style>
 </head>
 
@@ -122,6 +138,30 @@ button{
 
 </div>
 </div>
+
+<?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful',
+        text: 'Your account has been created successfully. Please login to continue.',
+        confirmButtonText: 'Go to Login',
+        confirmButtonColor: '#000',
+        background: '#fff',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        customClass: {
+            popup: 'swal-elegant'
+        }
+    }).then(() => {
+        window.location.href = 'login.php';
+    });
+});
+</script>
+<?php endif; ?>
+
+
 
 </body>
 </html>
