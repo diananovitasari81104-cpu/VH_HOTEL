@@ -22,8 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// ❗ VALIDASI INPUT
-if (empty($_POST['id']) || empty($_POST['catatan_admin'])) {
+// ❗ VALIDASI INPUT (dari MODAL)
+if (
+    empty($_POST['id']) ||
+    empty($_POST['catatan_admin'])
+) {
     echo json_encode([
         'success' => false,
         'message' => 'Data tidak lengkap'
@@ -34,12 +37,11 @@ if (empty($_POST['id']) || empty($_POST['catatan_admin'])) {
 $id_batal = (int) $_POST['id'];
 $catatan  = trim($_POST['catatan_admin']);
 
-// ❗ CEK DATA MASIH PENDING
+// ❗ CEK PEMBATALAN MASIH PENDING
 $data = fetch_single("
     SELECT 
         p.id_batal,
         p.id_reservasi,
-        p.status_pengajuan,
         u.nama_lengkap
     FROM pembatalan p
     JOIN reservasi r ON p.id_reservasi = r.id_reservasi
@@ -56,12 +58,15 @@ if (!$data) {
     exit;
 }
 
+// =============================
+// TRANSAKSI DATABASE
+// =============================
 $conn->begin_transaction();
 
 try {
 
     /**
-     * 1. UPDATE STATUS PEMBATALAN → DITOLAK
+     * 1️⃣ UPDATE PEMBATALAN → DITOLAK
      */
     $stmt = $conn->prepare("
         UPDATE pembatalan
@@ -72,17 +77,26 @@ try {
     ");
 
     if (!$stmt) {
-        throw new Exception("Prepare gagal (pembatalan)");
+        throw new Exception('Prepare gagal (pembatalan)');
     }
 
     $status_pengajuan = 'ditolak';
-    $stmt->bind_param("ssi", $status_pengajuan, $catatan, $id_batal);
-    $stmt->execute();
+    $stmt->bind_param(
+        "ssi",
+        $status_pengajuan,
+        $catatan,
+        $id_batal
+    );
+
+    if (!$stmt->execute()) {
+        throw new Exception('Eksekusi gagal (pembatalan)');
+    }
+
     $stmt->close();
 
 
     /**
-     * 2. UPDATE STATUS RESERVASI → LUNAS
+     * 2️⃣ UPDATE RESERVASI → LUNAS
      */
     $stmt = $conn->prepare("
         UPDATE reservasi
@@ -91,22 +105,30 @@ try {
     ");
 
     if (!$stmt) {
-        throw new Exception("Prepare gagal (reservasi)");
+        throw new Exception('Prepare gagal (reservasi)');
     }
 
     $status_reservasi = 'lunas';
-    $stmt->bind_param("si", $status_reservasi, $data['id_reservasi']);
-    $stmt->execute();
+    $stmt->bind_param(
+        "si",
+        $status_reservasi,
+        $data['id_reservasi']
+    );
+
+    if (!$stmt->execute()) {
+        throw new Exception('Eksekusi gagal (reservasi)');
+    }
+
     $stmt->close();
 
 
     /**
-     * 3. COMMIT
+     * 3️⃣ COMMIT
      */
     $conn->commit();
 
     log_activity(
-        "Rejected cancellation #{$id_batal} (Guest: {$data['nama_lengkap']})"
+        "Rejected cancellation #{$id_batal} | Guest: {$data['nama_lengkap']}"
     );
 
     echo json_encode([

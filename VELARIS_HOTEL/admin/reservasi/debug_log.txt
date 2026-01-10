@@ -1,0 +1,16 @@
+2026-01-10 11:35:37 - POST Data: Array
+(
+    [id] => 26
+    [action] => approve
+)
+
+ID: 26, Action: approve, Catatan: 
+SQL Reservasi: SELECT * FROM reservasi WHERE id_reservasi = 26
+Status Reservasi: pembatalan_diajukan
+SQL Pembatalan: SELECT * FROM pembatalan WHERE id_reservasi = 26
+ID Batal: 18
+SQL1 Approve: UPDATE reservasi SET status='batal' WHERE id_reservasi=26
+Hasil SQL1 Approve: SUCCESS
+SQL2 Approve: UPDATE pembatalan SET status_pengajuan='disetujui', tgl_diproses=NOW() WHERE id_batal=18
+Hasil SQL2 Approve: SUCCESS
+BERHASIL APPROVE!

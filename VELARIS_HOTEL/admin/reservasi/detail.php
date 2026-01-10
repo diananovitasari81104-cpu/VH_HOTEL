@@ -166,7 +166,6 @@ if (!empty($reservasi['bukti_bayar']) && file_exists($path)):
     </p>
 <?php endif; ?>
 
-
 <br><a href="index.php" class="btn btn-outline-dark mt-5">← Back</a>
 
 </div>
@@ -189,18 +188,11 @@ $map = [
     'batal'                => 'danger',
     'pembatalan_diajukan'  => 'primary'
 ];
-
 ?>
 <span class="badge bg-<?= $map[$reservasi['status']] ?>">
     <?= ucfirst(str_replace('_',' ',$reservasi['status'])) ?>
 </span>
 
-<?php if($reservasi['status'] === 'pembatalan_diajukan'): ?>
-<div class="mt-4">
-    <button class="btn btn-success w-100 mb-2" onclick="prosesPembatalan('approve')">Setujui Pembatalan</button>
-    <button class="btn btn-danger w-100" onclick="prosesPembatalan('reject')">Tolak Pembatalan</button>
-</div>
-<?php endif; ?>
 </div>
 </div>
 </div>
@@ -208,17 +200,5 @@ $map = [
 </div>
 </div>
 </div>
-
-<script>
-function prosesPembatalan(action){
-    $.post('update_status.php', {
-        id: <?= $reservasi['id_reservasi'] ?>,
-        action: action // approve / reject
-    }, function(res){
-        alert(res.message);
-        if(res.success) location.reload();
-    }, 'json');
-}
-</script>
 
 <?php require_once '../includes/footer.php'; ?>

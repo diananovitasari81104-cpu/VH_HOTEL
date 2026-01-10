@@ -154,13 +154,15 @@ require_once '../includes/header.php';
 
                             <td>
                                 <?php
+                                // Mapping status sesuai database
                                 $status_map = [
-                                    'menunggu_bayar'      => 'warning',
-                                    'menunggu_verifikasi' => 'info',
-                                    'lunas'               => 'success',
-                                    'cancelled_request'   => 'warning',
-                                    'batal'               => 'danger',
-                                    'selesai'             => 'secondary'
+                                    'menunggu_bayar'       => 'warning',
+                                    'menunggu_verifikasi'  => 'info',
+                                    'lunas'                => 'success',
+                                    'pembatalan_diajukan'  => 'primary',
+                                    'batal'                => 'danger',
+                                    'selesai'              => 'secondary',
+                                    'checkin'              => 'info'
                                 ];
                                 $badge = $status_map[$res['status']] ?? 'secondary';
                                 ?>
