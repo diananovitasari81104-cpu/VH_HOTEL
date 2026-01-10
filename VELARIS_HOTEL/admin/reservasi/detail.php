@@ -79,6 +79,14 @@ require_once '../includes/header.php';
     </div>
     <div class="col-md-6">
         <div class="section-title">Booking Details</div>
+
+        <p>
+            Booking Code:<br>
+            <strong style="letter-spacing:2px;font-size:1.1rem">
+                <?= htmlspecialchars($reservasi['kode_booking']) ?>
+            </strong>
+        </p>
+
         <p>Check-in: <strong><?= format_tanggal($reservasi['tgl_checkin'],'d F Y') ?></strong></p>
         <p>Check-out: <strong><?= format_tanggal($reservasi['tgl_checkout'],'d F Y') ?></strong></p>
         <p><?= $nights ?> night(s)</p>

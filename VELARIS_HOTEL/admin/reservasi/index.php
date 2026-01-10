@@ -103,17 +103,18 @@ require_once '../includes/header.php';
                 <table id="reservationsTable"
                        class="table table-hover align-middle simple-table">
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Guest</th>
-                            <th>Room</th>
-                            <th>Check-in</th>
-                            <th>Check-out</th>
-                            <th>Qty</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th class="text-end">Action</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Guest</th>
+                        <th>Room</th>
+                        <th>Booking Code</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($reservations as $res): ?>
@@ -130,6 +131,12 @@ require_once '../includes/header.php';
                             <td>
                                 <?= htmlspecialchars($res['nama_kamar']) ?><br>
                                 <small class="text-muted"><?= htmlspecialchars($res['tipe_kamar']) ?></small>
+                            </td>
+
+                            <td>
+                                <strong style="letter-spacing:1px;">
+                                    <?= htmlspecialchars($res['kode_booking']) ?>
+                                </strong>
                             </td>
 
                             <td><?= format_tanggal($res['tgl_checkin'], 'd M Y') ?></td>
@@ -164,16 +171,9 @@ require_once '../includes/header.php';
 
                             <td class="text-end">
                                 <a href="detail.php?id=<?= $res['id_reservasi'] ?>"
-                                   class="btn btn-outline-dark btn-sm btn-icon"
-                                   title="View Detail">
+                                class="btn btn-outline-dark btn-sm btn-icon">
                                     <i class="fas fa-eye"></i>
                                 </a>
-
-                                <?php if ($res['status'] === 'cancelled_request'): ?>
-                                    <span class="badge bg-warning ms-2">
-                                        Request
-                                    </span>
-                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach ?>
