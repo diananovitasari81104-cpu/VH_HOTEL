@@ -205,6 +205,88 @@ body{
     padding:10px 32px !important;
 }
 
+/* ================= LUXURY DROPDOWN ================= */
+.dropdown-menu{
+    display:none;
+    position:absolute;
+    right:0;
+    top:calc(100% + 14px);
+
+    min-width:220px;
+    padding:14px;
+    border-radius:18px;
+    border:1px solid rgba(212,175,55,.35);
+
+    background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #f7f5f1 100%
+    );
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.7);
+
+    z-index:2000;
+}
+
+/* ARROW */
+.dropdown-menu::before{
+    content:"";
+    position:absolute;
+    top:-8px;
+    right:26px;
+    width:16px;
+    height:16px;
+    background:#fff;
+    transform:rotate(45deg);
+    border-left:1px solid rgba(212,175,55,.35);
+    border-top:1px solid rgba(212,175,55,.35);
+}
+
+/* SHOW */
+.dropdown.show .dropdown-menu{
+    display:block;
+}
+
+/* ITEM */
+.dropdown-menu .dropdown-item{
+    font-size:.78rem;
+    padding:10px 18px;
+    border-radius:14px;
+    text-align:left;
+    color:#222;
+    letter-spacing:1px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:.25s ease;
+}
+
+/* ICON STYLE (optional if pakai icon) */
+.dropdown-menu .dropdown-item i{
+    font-size:.8rem;
+    color:var(--gold);
+}
+
+/* HOVER EFFECT */
+.dropdown-menu .dropdown-item:hover{
+    background:linear-gradient(
+        90deg,
+        rgba(212,175,55,.15),
+        rgba(212,175,55,.05)
+    );
+    color:#000;
+    transform:translateX(4px);
+}
+
+/* DIVIDER */
+.dropdown-divider{
+    height:1px;
+    background:rgba(0,0,0,.08);
+    margin:8px 0;
+}
+
 </style>
 </head>
 
@@ -233,43 +315,55 @@ body{
                 </button>
 
                 <ul class="dropdown-menu">
-                    
-                    <!-- COMMON -->
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0)" onclick="confirmAdminLogout()">
-    Logout
-</a>
 
-                    </li>
+    <li>
+        <span class="dropdown-item" style="cursor:default;font-weight:600;">
+            <?= htmlspecialchars($_SESSION['nama_lengkap']) ?>
+        </span>
+    </li>
 
-                    <li>
-                        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/pembatalan/index.php">
-                            Cancellation Requests
-                        </a>
-                    </li>
+    <li><div class="dropdown-divider"></div></li>
 
-                    <li>
-                        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/reservasi/index.php">
-                            Reservations
-                        </a>
-                    </li>
+    <li>
+        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/reservasi/index.php">
+            Reservations
+        </a>
+    </li>
 
-                    <!-- ADMIN ONLY -->
-                    <?php if (is_admin()): ?>
-                        <li>
-                            <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/log/index.php">
-                                Log Activity
-                            </a>
-                        </li>
+    <li>
+        <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/pembatalan/index.php">
+            Cancellation Requests
+        </a>
+    </li>
 
-                        <li>
-                            <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/users/index.php">
-                                Manage Users
-                            </a>
-                        </li>
-                    <?php endif; ?>
+    <?php if (is_admin()): ?>
+        <li><div class="dropdown-divider"></div></li>
 
-                </ul>
+        <li>
+            <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/users/index.php">
+                Manage Users
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item" href="/uaspemweb/VELARIS_HOTEL/admin/log/index.php">
+                Log Activity
+            </a>
+        </li>
+    <?php endif; ?>
+
+    <li><div class="dropdown-divider"></div></li>
+
+    <li>
+        <a class="dropdown-item text-danger"
+           href="javascript:void(0)"
+           onclick="confirmAdminLogout()">
+            Logout
+        </a>
+    </li>
+
+</ul>
+
             </div>
 
             <!-- HAMBURGER -->

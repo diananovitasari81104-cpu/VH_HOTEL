@@ -124,7 +124,7 @@ require_once 'components/header.php';
                 comfort and relaxation during your stay in Solo.
             </p>
 
-            <a href="#" class="btn btn-outline-dark">
+            <a href="blog_guest.php" class="btn btn-outline-dark">
                 HOTEL BLOG →
             </a>
         </div>

@@ -25,62 +25,83 @@ require_once '../includes/header.php';
 
 <style>
 .page-wrapper{
-    padding:160px 20px 120px;
-    background:linear-gradient(180deg,#ffffff 0%,#f6f6f6 100%);
+    padding:120px 20px 80px;
+    background:#f5f6f8;
 }
 
-.lux-container{
-    max-width:1200px;
-    margin:auto;
-}
-
-.lux-card{
+/* CARD */
+.simple-card{
     background:#fff;
-    border-radius:26px;
-    box-shadow:0 25px 60px rgba(0,0,0,.08);
+    border-radius:18px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
 }
 
-.lux-header{
-    padding:34px 40px;
-    font-family:'Cinzel',serif;
-    font-size:1.6rem;
-    letter-spacing:2px;
+/* HEADER */
+.simple-header{
+    padding:24px 30px;
     border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-.lux-body{
-    padding:36px;
+.simple-header h5{
+    margin:0;
+    font-weight:600;
 }
 
-.lux-table thead th{
-    text-transform:uppercase;
+/* BODY */
+.simple-body{
+    padding:24px;
+}
+
+/* TABLE */
+.simple-table th{
     font-size:.75rem;
+    text-transform:uppercase;
     letter-spacing:1px;
+    color:#888;
     border-bottom:1px solid #eee;
 }
 
-.lux-table td{
+.simple-table td{
     vertical-align:middle;
+    font-size:.85rem;
 }
 
-.badge{
-    padding:8px 14px;
-    border-radius:50px;
+/* ID */
+.reservation-id {
+    font-weight: 700;
+    color: #d4af37 !important;
+}
+
+/* STATUS */
+.badge-status{
+    padding:6px 14px;
+    border-radius:30px;
     font-size:.7rem;
+    font-weight:600;
+}
+
+/* ACTION */
+.btn-icon{
+    padding:6px 10px;
+    border-radius:10px;
 }
 </style>
 
 <div class="page-wrapper">
-<div class="lux-container">
+<div class="container-fluid">
 
-    <div class="lux-card">
-        <div class="lux-header">
-            Reservation Management
+    <div class="simple-card">
+        <div class="simple-header">
+            <h5>Reservation Management</h5>
         </div>
 
-        <div class="lux-body">
+        <div class="simple-body">
             <div class="table-responsive">
-                <table id="reservationsTable" class="table lux-table table-hover align-middle">
+                <table id="reservationsTable"
+                       class="table table-hover align-middle simple-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -95,9 +116,11 @@ require_once '../includes/header.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($reservations as $res): ?>
+                    <?php foreach ($reservations as $res): ?>
                         <tr>
-                            <td><strong>#<?= $res['id_reservasi'] ?></strong></td>
+                            <td class="reservation-id">
+                                #<?= str_pad($res['id_reservasi'], 4, '0', STR_PAD_LEFT) ?>
+                            </td>
 
                             <td>
                                 <?= htmlspecialchars($res['nama_lengkap']) ?><br>
@@ -113,8 +136,8 @@ require_once '../includes/header.php';
                             <td><?= format_tanggal($res['tgl_checkout'], 'd M Y') ?></td>
 
                             <td>
-                                <span class="badge bg-info">
-                                    <?= $res['jumlah_kamar'] ?> room(s)
+                                <span class="badge bg-light text-dark">
+                                    <?= $res['jumlah_kamar'] ?> room
                                 </span>
                             </td>
 
@@ -134,26 +157,26 @@ require_once '../includes/header.php';
                                 ];
                                 $badge = $status_map[$res['status']] ?? 'secondary';
                                 ?>
-                                <span class="badge bg-<?= $badge ?>">
+                                <span class="badge badge-status bg-<?= $badge ?>">
                                     <?= ucfirst(str_replace('_',' ',$res['status'])) ?>
                                 </span>
                             </td>
 
                             <td class="text-end">
                                 <a href="detail.php?id=<?= $res['id_reservasi'] ?>"
-                                   class="btn btn-sm btn-outline-dark"
+                                   class="btn btn-outline-dark btn-sm btn-icon"
                                    title="View Detail">
                                     <i class="fas fa-eye"></i>
                                 </a>
 
                                 <?php if ($res['status'] === 'cancelled_request'): ?>
                                     <span class="badge bg-warning ms-2">
-                                        Cancellation Requested
+                                        Request
                                     </span>
                                 <?php endif; ?>
                             </td>
                         </tr>
-                        <?php endforeach ?>
+                    <?php endforeach ?>
                     </tbody>
                 </table>
             </div>
@@ -167,7 +190,8 @@ require_once '../includes/header.php';
 document.addEventListener('DOMContentLoaded', function () {
     $('#reservationsTable').DataTable({
         order: [[0, 'desc']],
-        pageLength: 10
+        pageLength: 10,
+        lengthChange: false
     });
 });
 </script>

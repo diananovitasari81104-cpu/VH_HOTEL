@@ -34,7 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['role'] = $user['role'];
 
             log_activity('Login to admin panel');
-            redirect('index.php', 'Welcome back, ' . $user['nama_lengkap'] . '!', 'success');
+            $_SESSION['login_success'] = $user['nama_lengkap'];
+            header("Location: index.php");
+            exit;
         } else {
             $error = 'Invalid email or password';
         }
@@ -176,7 +178,7 @@ body::before{
         </form>
 
         <div class="text-center default-login">
-            Default Login: admin@velaris.com / vel4ris4dmin
+            Default Login: admin@velaris.com / 123123
         </div>
     </div>
 </div>

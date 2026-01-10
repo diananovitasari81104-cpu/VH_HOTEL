@@ -29,7 +29,7 @@ if ($cek) {
 $hash = hash_password($password);
 
 $sql = "INSERT INTO users (nama_lengkap, email, password, no_hp, role)
-        VALUES ('$nama', '$email', '$hash', '$no_hp', 'customer')";
+        VALUES ('$nama', '$email', '$hash', '$no_hp', 'user')";
 
 insert($sql);
 

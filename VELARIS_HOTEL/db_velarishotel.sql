@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 6.0.0-dev+20260106.f3f3d53389
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Waktu pembuatan: 29 Des 2025 pada 09.49
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Jan 10, 2026 at 05:46 AM
+-- Server version: 8.4.3
+-- PHP Version: 8.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,20 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `blog`
+-- Table structure for table `blog`
 --
 
 CREATE TABLE `blog` (
-  `id_blog` int(11) NOT NULL,
-  `judul` varchar(200) NOT NULL,
-  `isi_konten` text NOT NULL,
-  `gambar` varchar(255) DEFAULT NULL,
-  `penulis` varchar(100) NOT NULL,
-  `tgl_posting` timestamp NOT NULL DEFAULT current_timestamp()
+  `id_blog` int NOT NULL,
+  `judul` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isi_konten` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gambar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `penulis` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tgl_posting` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `blog`
+-- Dumping data for table `blog`
 --
 
 INSERT INTO `blog` (`id_blog`, `judul`, `isi_konten`, `gambar`, `penulis`, `tgl_posting`) VALUES
@@ -48,19 +48,19 @@ INSERT INTO `blog` (`id_blog`, `judul`, `isi_konten`, `gambar`, `penulis`, `tgl_
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `experiences`
+-- Table structure for table `experiences`
 --
 
 CREATE TABLE `experiences` (
-  `id_experience` int(11) NOT NULL,
-  `nama_aktivitas` varchar(100) NOT NULL,
-  `deskripsi` text DEFAULT NULL,
-  `harga` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `foto` varchar(255) DEFAULT NULL
+  `id_experience` int NOT NULL,
+  `nama_aktivitas` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deskripsi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `harga` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `foto` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `experiences`
+-- Dumping data for table `experiences`
 --
 
 INSERT INTO `experiences` (`id_experience`, `nama_aktivitas`, `deskripsi`, `harga`, `foto`) VALUES
@@ -74,21 +74,21 @@ INSERT INTO `experiences` (`id_experience`, `nama_aktivitas`, `deskripsi`, `harg
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kamar`
+-- Table structure for table `kamar`
 --
 
 CREATE TABLE `kamar` (
-  `id_kamar` int(11) NOT NULL,
-  `nama_kamar` varchar(100) NOT NULL,
-  `tipe_kamar` varchar(50) NOT NULL,
+  `id_kamar` int NOT NULL,
+  `nama_kamar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipe_kamar` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `harga` decimal(10,2) NOT NULL,
-  `deskripsi` text DEFAULT NULL,
-  `foto_kamar` varchar(255) DEFAULT NULL,
-  `stok` int(11) NOT NULL DEFAULT 0
+  `deskripsi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `foto_kamar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stok` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `kamar`
+-- Dumping data for table `kamar`
 --
 
 INSERT INTO `kamar` (`id_kamar`, `nama_kamar`, `tipe_kamar`, `harga`, `deskripsi`, `foto_kamar`, `stok`) VALUES
@@ -104,18 +104,18 @@ INSERT INTO `kamar` (`id_kamar`, `nama_kamar`, `tipe_kamar`, `harga`, `deskripsi
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `log_aktivitas`
+-- Table structure for table `log_aktivitas`
 --
 
 CREATE TABLE `log_aktivitas` (
-  `id_log` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `aksi` varchar(255) NOT NULL,
-  `waktu` timestamp NOT NULL DEFAULT current_timestamp()
+  `id_log` int NOT NULL,
+  `id_user` int NOT NULL,
+  `aksi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `waktu` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `log_aktivitas`
+-- Dumping data for table `log_aktivitas`
 --
 
 INSERT INTO `log_aktivitas` (`id_log`, `id_user`, `aksi`, `waktu`) VALUES
@@ -166,147 +166,169 @@ INSERT INTO `log_aktivitas` (`id_log`, `id_user`, `aksi`, `waktu`) VALUES
 (45, 5, 'Added blog article: Why Velaris Hotel is Perfect for Business Travelers', '2025-12-29 07:53:41'),
 (46, 5, 'Deleted blog article: Why Velaris Hotel is Perfect for Business Travelers (ID: 4)', '2025-12-29 07:53:47'),
 (47, 5, 'Logout from admin panel', '2025-12-29 07:54:14'),
-(48, 1, 'Login to admin panel', '2025-12-29 08:20:42');
+(48, 1, 'Login to admin panel', '2025-12-29 08:20:42'),
+(49, 1, 'Login to admin panel', '2026-01-09 15:16:15'),
+(50, 1, 'Login to admin panel', '2026-01-09 21:59:58'),
+(51, 1, 'Login to admin panel', '2026-01-09 22:55:22'),
+(52, 1, 'Login to admin panel', '2026-01-10 03:39:11'),
+(53, 1, 'Login to admin panel', '2026-01-10 04:41:58'),
+(54, 1, 'Admin logout', '2026-01-10 05:16:50'),
+(55, 1, 'Login to admin panel', '2026-01-10 05:17:54'),
+(56, 1, 'Admin logout', '2026-01-10 05:32:06'),
+(57, 1, 'Login to admin panel', '2026-01-10 05:32:16'),
+(58, 1, 'Admin logout', '2026-01-10 05:44:15'),
+(59, 1, 'Login to admin panel', '2026-01-10 05:44:25');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pembatalan`
+-- Table structure for table `pembatalan`
 --
 
 CREATE TABLE `pembatalan` (
-  `id_batal` int(11) NOT NULL,
-  `id_reservasi` int(11) NOT NULL,
-  `tgl_pengajuan` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id_batal` int NOT NULL,
+  `id_reservasi` int NOT NULL,
+  `tgl_pengajuan` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tgl_diproses` datetime DEFAULT NULL,
-  `alasan` text NOT NULL,
-  `nama_bank` varchar(50) NOT NULL,
-  `no_rekening` varchar(50) NOT NULL,
-  `nama_pemilik` varchar(100) NOT NULL,
-  `status_pengajuan` enum('pending','disetujui','ditolak') DEFAULT 'pending',
-  `catatan_admin` text DEFAULT NULL
+  `alasan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_bank` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_rekening` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama_pemilik` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_pengajuan` enum('pending','disetujui','ditolak') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'pending',
+  `catatan_admin` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `pembatalan`
+-- Dumping data for table `pembatalan`
 --
 
 INSERT INTO `pembatalan` (`id_batal`, `id_reservasi`, `tgl_pengajuan`, `tgl_diproses`, `alasan`, `nama_bank`, `no_rekening`, `nama_pemilik`, `status_pengajuan`, `catatan_admin`) VALUES
 (1, 2, '2025-12-29 08:18:39', '2025-10-16 00:00:00', 'Perubahan jadwal mendadak', 'BCA', '1234567890', 'Alya Putri', 'disetujui', NULL),
-(2, 6, '2025-12-29 08:19:28', NULL, 'Kondisi kesehatan', 'Mandiri', '9876543210', 'Nabila Rahman', 'pending', NULL);
+(2, 6, '2025-12-29 08:19:28', NULL, 'Kondisi kesehatan', 'Mandiri', '9876543210', 'Nabila Rahman', 'pending', NULL),
+(3, 9, '2026-01-09 08:19:12', NULL, 'ganti tanggal', 'BCA', '123123', 'COKI', 'pending', NULL),
+(4, 10, '2026-01-09 08:23:08', '2026-01-09 22:24:45', 'ganti tanggal kak', 'BCA', '123123', 'COKI', 'disetujui', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `reservasi`
+-- Table structure for table `reservasi`
 --
 
 CREATE TABLE `reservasi` (
-  `id_reservasi` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_kamar` int(11) NOT NULL,
+  `id_reservasi` int NOT NULL,
+  `id_user` int NOT NULL,
+  `id_kamar` int NOT NULL,
+  `kode_booking` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tgl_checkin` date NOT NULL,
   `tgl_checkout` date NOT NULL,
-  `jumlah_kamar` int(11) NOT NULL DEFAULT 1,
+  `jumlah_kamar` int NOT NULL DEFAULT '1',
   `total_harga` decimal(10,2) NOT NULL,
-  `bukti_bayar` varchar(255) DEFAULT NULL,
-  `status` enum('menunggu_bayar','menunggu_verifikasi','lunas','batal','selesai') DEFAULT 'menunggu_bayar',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `bukti_bayar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('menunggu_bayar','menunggu_verifikasi','lunas','pembatalan_diajukan','batal','selesai','checkin') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'menunggu_bayar',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `reservasi`
+-- Dumping data for table `reservasi`
 --
 
-INSERT INTO `reservasi` (`id_reservasi`, `id_user`, `id_kamar`, `tgl_checkin`, `tgl_checkout`, `jumlah_kamar`, `total_harga`, `bukti_bayar`, `status`, `created_at`) VALUES
-(1, 6, 1, '2025-10-10', '2025-10-12', 1, 640000.00, NULL, 'selesai', '2025-09-30 17:00:00'),
-(2, 6, 2, '2025-10-20', '2025-10-22', 1, 1040000.00, NULL, 'batal', '2025-10-14 17:00:00'),
-(3, 7, 3, '2025-11-05', '2025-11-07', 1, 1980000.00, NULL, 'lunas', '2025-10-31 17:00:00'),
-(4, 7, 5, '2025-11-18', '2025-11-20', 2, 1280000.00, NULL, 'selesai', '2025-11-09 17:00:00'),
-(5, 8, 8, '2025-12-10', '2025-12-13', 1, 2160000.00, NULL, 'menunggu_verifikasi', '2025-11-30 17:00:00'),
-(6, 8, 12, '2025-12-20', '2025-12-23', 1, 2850000.00, NULL, 'batal', '2025-12-04 17:00:00');
+INSERT INTO `reservasi` (`id_reservasi`, `id_user`, `id_kamar`, `kode_booking`, `tgl_checkin`, `tgl_checkout`, `jumlah_kamar`, `total_harga`, `bukti_bayar`, `status`, `created_at`) VALUES
+(1, 6, 1, '', '2025-10-10', '2025-10-12', 1, 640000.00, NULL, 'selesai', '2025-09-30 17:00:00'),
+(2, 6, 2, '', '2025-10-20', '2025-10-22', 1, 1040000.00, NULL, 'batal', '2025-10-14 17:00:00'),
+(3, 7, 3, '', '2025-11-05', '2025-11-07', 1, 1980000.00, NULL, 'lunas', '2025-10-31 17:00:00'),
+(4, 7, 5, '', '2025-11-18', '2025-11-20', 2, 1280000.00, NULL, 'selesai', '2025-11-09 17:00:00'),
+(5, 8, 8, '', '2025-12-10', '2025-12-13', 1, 2160000.00, NULL, 'menunggu_verifikasi', '2025-11-30 17:00:00'),
+(6, 8, 12, '', '2025-12-20', '2025-12-23', 1, 2850000.00, NULL, 'batal', '2025-12-04 17:00:00'),
+(7, 7, 1, 'VLR-20260109-745F', '2026-01-09', '2026-01-10', 1, 320000.00, '1767971338_Screenshot (687).png', 'lunas', '2026-01-09 15:08:58'),
+(8, 9, 2, 'VLR-20260109-5CFA', '2026-01-09', '2026-01-10', 1, 520000.00, '1767971818_Screenshot (687).png', 'lunas', '2026-01-09 15:16:58'),
+(9, 9, 1, 'VLR-20260109-AC61', '2026-01-09', '2026-01-10', 1, 320000.00, '1767971926_Screenshot (687).png', 'checkin', '2026-01-09 15:18:46'),
+(10, 9, 1, 'VLR-20260109-BA58', '2026-01-09', '2026-01-10', 1, 320000.00, '1767972174_Screenshot (687).png', 'batal', '2026-01-09 15:22:54'),
+(11, 9, 3, 'VLR-20260109-67CC', '2026-01-10', '2026-01-11', 1, 990000.00, '1767997417_Screenshot 2026-01-09 123138.png', 'lunas', '2026-01-09 22:23:37'),
+(12, 9, 8, 'VLR-20260109-8899', '2026-01-10', '2026-01-11', 1, 720000.00, NULL, 'checkin', '2026-01-09 22:37:05');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `reservasi_experience`
+-- Table structure for table `reservasi_experience`
 --
 
 CREATE TABLE `reservasi_experience` (
-  `id` int(11) NOT NULL,
-  `id_reservasi` int(11) NOT NULL,
-  `id_experience` int(11) NOT NULL,
-  `jumlah` int(11) NOT NULL DEFAULT 1
+  `id` int NOT NULL,
+  `id_reservasi` int NOT NULL,
+  `id_experience` int NOT NULL,
+  `jumlah` int NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
-  `id_user` int(11) NOT NULL,
-  `nama_lengkap` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `no_hp` varchar(20) NOT NULL,
-  `role` enum('admin','staff','user') DEFAULT 'user',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `id_user` int NOT NULL,
+  `nama_lengkap` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_hp` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('admin','staff','user') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'user',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_user`, `nama_lengkap`, `email`, `password`, `no_hp`, `role`, `created_at`) VALUES
-(1, 'Admin Velaris', 'admin@velaris.com', '$2y$10$Ftmpc5VrpGVPhbjntp/s7.IdGWyghvN5j.MfDV2wlmEDwYuQnz/V6', '081234567890', 'admin', '2025-12-20 05:05:12'),
+(1, 'Admin Velaris', 'admin@velaris.com', '$2y$10$KeHCNy8eEumQYDHjbOZ0Uuje1lDwOMDirwLVRmyp3b2DqWs6fL38q', '081234567890', 'admin', '2025-12-20 05:05:12'),
 (2, 'Paulo Dyana Beckham', 'diana@velaris.com', '$2y$10$msFX62h0XBgTJp4vX7B7zu/smZnbIPqdTmvFV2HWQLxeU0NcfPCfy', '081234567891', 'staff', '2025-12-21 08:15:05'),
 (3, 'Andien Elinor Westwood', 'andien@velaris.com', '$2y$10$DYFhWgOiTvpKnAnIHZb70ekOQQFNASoB3kEEsyAiFjaEfW/pRi8d2', '081234567892', 'staff', '2025-12-21 08:21:55'),
 (4, 'Silvera Claire Whitmore', 'silvi@velaris.com', '$2y$10$D/4saY9sW52Ycm8sev/IrOIq7K/12ehbLPY4wbL7wK3jz29fyli0i', '081234567893', 'staff', '2025-12-21 08:24:40'),
 (5, 'Issa Olivia Ravenscroft', 'nisa@velaris.com', '$2y$10$e3E3narAOBnwGZ8FIDCsGuO6vM88aCkIDExk/k6PgjWI/VJkZXG/C', '081234567894', 'staff', '2025-12-21 08:33:58'),
 (6, 'Alya Putri', 'alya@gmail.com', '$2y$10$dummyhashalya', '081300000001', 'user', '2025-10-04 17:00:00'),
-(7, 'Rizky Pratama', 'rizky@gmail.com', '$2y$10$dummyhashrizky', '081300000002', 'user', '2025-11-09 17:00:00'),
-(8, 'Nabila Rahman', 'nabila@gmail.com', '$2y$10$dummynabila', '081300000003', 'user', '2025-12-01 17:00:00');
+(7, 'Rizky Pratama', 'rizky@gmail.com', '$2y$10$DHTBBrFc0F/7tKyNSEADMeuQrCt620wcqg7NvHzibPjHgI.ilFJdC', '081300000002', 'user', '2025-11-09 17:00:00'),
+(8, 'Nabila Rahman', 'nabila@gmail.com', '$2y$10$dummynabila', '081300000003', 'user', '2025-12-01 17:00:00'),
+(9, 'coki', 'cokipardede@gmail.com', '$2y$10$eZ2UBT3ptf22jS1/LXzb4Opp/pdLPr7zGT5TLkCKhR6QewH1WEONq', '123123123', 'user', '2026-01-09 15:13:31'),
+(10, 'lala', 'lala@gmail.com', '$2y$10$A44UrQ6HL77lyRXRDj5KDuDUHFwpjm9532L7Vkj1eFLL36V4RSd4e', '085123456789', 'user', '2026-01-09 22:53:28');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `blog`
+-- Indexes for table `blog`
 --
 ALTER TABLE `blog`
   ADD PRIMARY KEY (`id_blog`);
 
 --
--- Indeks untuk tabel `experiences`
+-- Indexes for table `experiences`
 --
 ALTER TABLE `experiences`
   ADD PRIMARY KEY (`id_experience`);
 
 --
--- Indeks untuk tabel `kamar`
+-- Indexes for table `kamar`
 --
 ALTER TABLE `kamar`
   ADD PRIMARY KEY (`id_kamar`);
 
 --
--- Indeks untuk tabel `log_aktivitas`
+-- Indexes for table `log_aktivitas`
 --
 ALTER TABLE `log_aktivitas`
   ADD PRIMARY KEY (`id_log`),
   ADD KEY `id_user` (`id_user`);
 
 --
--- Indeks untuk tabel `pembatalan`
+-- Indexes for table `pembatalan`
 --
 ALTER TABLE `pembatalan`
   ADD PRIMARY KEY (`id_batal`),
   ADD KEY `id_reservasi` (`id_reservasi`);
 
 --
--- Indeks untuk tabel `reservasi`
+-- Indexes for table `reservasi`
 --
 ALTER TABLE `reservasi`
   ADD PRIMARY KEY (`id_reservasi`),
@@ -314,7 +336,7 @@ ALTER TABLE `reservasi`
   ADD KEY `id_kamar` (`id_kamar`);
 
 --
--- Indeks untuk tabel `reservasi_experience`
+-- Indexes for table `reservasi_experience`
 --
 ALTER TABLE `reservasi_experience`
   ADD PRIMARY KEY (`id`),
@@ -322,89 +344,89 @@ ALTER TABLE `reservasi_experience`
   ADD KEY `id_experience` (`id_experience`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id_user`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `blog`
+-- AUTO_INCREMENT for table `blog`
 --
 ALTER TABLE `blog`
-  MODIFY `id_blog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_blog` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT untuk tabel `experiences`
+-- AUTO_INCREMENT for table `experiences`
 --
 ALTER TABLE `experiences`
-  MODIFY `id_experience` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_experience` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT untuk tabel `kamar`
+-- AUTO_INCREMENT for table `kamar`
 --
 ALTER TABLE `kamar`
-  MODIFY `id_kamar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_kamar` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `log_aktivitas`
+-- AUTO_INCREMENT for table `log_aktivitas`
 --
 ALTER TABLE `log_aktivitas`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id_log` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
--- AUTO_INCREMENT untuk tabel `pembatalan`
+-- AUTO_INCREMENT for table `pembatalan`
 --
 ALTER TABLE `pembatalan`
-  MODIFY `id_batal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_batal` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT untuk tabel `reservasi`
+-- AUTO_INCREMENT for table `reservasi`
 --
 ALTER TABLE `reservasi`
-  MODIFY `id_reservasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_reservasi` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `reservasi_experience`
+-- AUTO_INCREMENT for table `reservasi_experience`
 --
 ALTER TABLE `reservasi_experience`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `log_aktivitas`
+-- Constraints for table `log_aktivitas`
 --
 ALTER TABLE `log_aktivitas`
   ADD CONSTRAINT `log_aktivitas_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `pembatalan`
+-- Constraints for table `pembatalan`
 --
 ALTER TABLE `pembatalan`
   ADD CONSTRAINT `pembatalan_ibfk_1` FOREIGN KEY (`id_reservasi`) REFERENCES `reservasi` (`id_reservasi`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `reservasi`
+-- Constraints for table `reservasi`
 --
 ALTER TABLE `reservasi`
   ADD CONSTRAINT `reservasi_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
   ADD CONSTRAINT `reservasi_ibfk_2` FOREIGN KEY (`id_kamar`) REFERENCES `kamar` (`id_kamar`);
 
 --
--- Ketidakleluasaan untuk tabel `reservasi_experience`
+-- Constraints for table `reservasi_experience`
 --
 ALTER TABLE `reservasi_experience`
   ADD CONSTRAINT `reservasi_experience_ibfk_1` FOREIGN KEY (`id_reservasi`) REFERENCES `reservasi` (`id_reservasi`) ON DELETE CASCADE,

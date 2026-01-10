@@ -142,13 +142,24 @@ $exp_total += $sub;
 </div>
 </div>
 
-<?php if ($reservasi['bukti_bayar']): ?>
-<div class="section-title mt-5">Payment Proof</div>
-<img src="../../uploads/bukti_bayar/<?= $reservasi['bukti_bayar'] ?>"
-     class="img-fluid rounded" style="max-width:420px">
+<?php
+$path = "../../uploads/bukti_pembayaran/" . $reservasi['bukti_bayar'];
+
+if (!empty($reservasi['bukti_bayar']) && file_exists($path)):
+?>
+    <div class="section-title mt-5">Payment Proof</div>
+    <img src="<?= $path ?>"
+         class="img-fluid rounded shadow"
+         style="max-width:420px">
+<?php else: ?>
+    <div class="section-title mt-5">Payment Proof</div>
+    <p class="text-muted fst-italic">
+        No payment proof uploaded by guest.
+    </p>
 <?php endif; ?>
 
-<a href="index.php" class="btn btn-outline-dark mt-5">← Back</a>
+
+<br><a href="index.php" class="btn btn-outline-dark mt-5">← Back</a>
 
 </div>
 </div>
@@ -161,13 +172,16 @@ $exp_total += $sub;
 <div class="lux-body text-center">
 <?php
 $map = [
-    'menunggu_bayar'=>'warning',
-    'menunggu_verifikasi'=>'info',
-    'lunas'=>'success',
-    'batal'=>'danger',
-    'selesai'=>'secondary',
-    'pembatalan_diajukan'=>'primary'
+    'menunggu_bayar'       => 'warning',
+    'menunggu_verifikasi'  => 'info',
+    'paid'                 => 'success',
+    'lunas'                => 'success',
+    'checkin'              => 'info',
+    'selesai'              => 'secondary',
+    'batal'                => 'danger',
+    'pembatalan_diajukan'  => 'primary'
 ];
+
 ?>
 <span class="badge bg-<?= $map[$reservasi['status']] ?>">
     <?= ucfirst(str_replace('_',' ',$reservasi['status'])) ?>

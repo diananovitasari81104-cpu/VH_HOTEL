@@ -1,29 +1,38 @@
-<?php 
-session_start(); 
-require_once '../../config/database.php'; 
-require_once '../../config/functions.php'; 
+<?php
+session_start();
+require_once '../../config/database.php';
+require_once '../../config/functions.php';
 
-$email = trim($_POST['email'] ?? ''); 
-$password = $_POST['password'] ?? ''; 
-$user = fetch_single("SELECT * FROM users WHERE email='$email'"); 
+header('Content-Type: application/json');
 
-if (!$user) { 
-    $_SESSION['error'] = "Akun tidak ditemukan"; 
-    header("Location: ../../auth/login.php"); 
-    exit; 
-} 
+$email    = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
 
-if (!verify_password($password, $user['password'])) { 
-    $_SESSION['error'] = "Password salah"; 
-    header("Location: ../../auth/login.php"); 
-    exit; 
-} 
+$user = fetch_single("SELECT * FROM users WHERE email='$email'");
 
-// Force Set
-$_SESSION['customer_id'] = (int)$user['id_user']; 
-$_SESSION['customer_name'] = $user['nama_lengkap'] ?? 'Customer'; 
-$_SESSION['customer_email'] = $user['email'] ?? '-'; 
+if (!$user) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Akun tidak ditemukan'
+    ]);
+    exit;
+}
 
-header("Location: ../../booking.php");
-exit; 
+if (!verify_password($password, $user['password'])) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Password salah'
+    ]);
+    exit;
+}
 
+// LOGIN BERHASIL
+$_SESSION['customer_id']    = (int)$user['id_user'];
+$_SESSION['customer_name']  = $user['nama_lengkap'] ?? 'Customer';
+$_SESSION['customer_email'] = $user['email'] ?? '-';
+
+echo json_encode([
+    'status' => 'success',
+    'name'   => $_SESSION['customer_name']
+]);
+exit;

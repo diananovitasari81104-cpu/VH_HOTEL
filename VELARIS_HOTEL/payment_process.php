@@ -68,6 +68,14 @@ if ($payment_method === 'bank_transfer') {
 
     $bukti_bayar = $fileName;
 }
+// TENTUKAN STATUS BERDASARKAN METODE PEMBAYARAN
+if ($payment_method === 'bank_transfer') {
+    $status = 'menunggu_verifikasi';
+} elseif ($payment_method === 'credit_card') {
+    $status = 'lunas';
+} else {
+    $status = 'menunggu_bayar';
+}
 
 /**
  * SIMPAN RESERVASI KE DATABASE (DENGAN KODE BOOKING)
@@ -75,18 +83,19 @@ if ($payment_method === 'bank_transfer') {
 $stmt = $conn->prepare("
     INSERT INTO reservasi 
     (id_user, id_kamar, tgl_checkin, tgl_checkout, total_harga, bukti_bayar, kode_booking, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 'paid')
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 ");
 
 $stmt->bind_param(
-    "iissdss",
+    "iissdsss",
     $id_user,
     $id_kamar,
     $tgl_checkin,
     $tgl_checkout,
     $total_harga,
     $bukti_bayar,
-    $kode_booking
+    $kode_booking,
+    $status
 );
 
 if (!$stmt->execute()) {
